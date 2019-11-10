@@ -1,5 +1,5 @@
-# 29/09/2019: Trabalho 1 de inteligência computacional
-### Este repositório hospeda os arquivos necessários à execução do trabalho 1 realizado durante os estudos da disciplina de inteligência computacional
+# 09/11/2019: Trabalho 2 de inteligência computacional
+### Este repositório hospeda os arquivos necessários à execução do trabalho 2 realizado durante os estudos da disciplina de inteligência computacional
 
 # Universidade Federal do Ceará
 ### Inteligência Computacional
@@ -31,88 +31,82 @@ Para a resolução desta questão e criação deste relatório foram usados os s
 
 ## Código comentado
 
-### Parte 1: Criação dos vetores
-Primeiramente, foram criados os dados dos dois eixos *x* e *y*. Após a limpeza das variáveis armazenadas e do console para evitar possíveis conflitos, em seguida foram criados doid vetores com valores de 0 a 20 a intervalos de 0,01.
+### Parte 1: Preparação dos dados da rede
+Primeiramente, o conjunto de dados foi carregado e os dados de entrada e de saída foram divididos nos vetores X1 (entrada) e D (saída). Foi estipulado o número de neurônios *q*, o número de atributos *p* e o intervalo dos pesos *a* e *b*.
 ```
-clear; // Limpa as variáveis armazenadas
-clc; // Limpa o console
+clc;    //Limpa a tela
+clear;  //Limpa as variáveis armazenadas anteriormente
 
-// Cria um vetor coluna de valores 0 a 20 com passo 0,01 e os atribui as variáveis x e y
-x=[0: 0.01 : 20]';
-y=[0: 0.01 : 20]';
-```
-### Parte 2: Definição da função solicitada
-Em seguida, foi criado o vetor *z* com os valores de acordo com a função solicitada na questão.
+//Carrega a base de dados 'aerogerador.dat' na variável base
+base = fscanfMat('aerogerador.dat');
 
+X1 = base(:,1); //Armazena a primeira coluna da base de dados na variável X1
+D = base(:,2);  //Armazena a segunda coluna na base de dados na variável D
+q = 7;          //Número de neurônios ocultos
+p = 1;          //Número de atributos
+a = 0; b = 1;   //Intervalo dos pesos
 ```
-// Cria uma função f(x,y) = |xsen(y.pi/4)+ysen(x.pi/4)| e a atribui a z
-z=abs((x.*sin(y.*%pi/4))+(y.*sin(x.*%pi/4)));
-```
-### Parte 3: Plotagem do gráfico da função
-No código abaixo, a janela gráfica é limpa, o gráfico da função solicitada na questão é plotado com os eixos e título do gráfico atribuídos.
+### Parte 2: Inicialização aleatória dos pesos dos neurônios ocultos
+A matriz W (matriz de pesos aleatórios) foi criada com *q* linhas e *p+1* colunas (p = número de atributos de entrada) com números aleatórios entre 0 e 1. Em seguida foi criada a matriz X (entradas) onde cada coluna corresponde a uma entrada na rede com dois valores. 1 do bias e o valor de entrada da base de dados. A matriz de saída D também foi transposta.
 
 ```
-clf; // Limpa a janela gráfica
-plot3d(x,y,z)
-xtitle('Gráfico da questão 1', 'Eixo X', 'Eixo Y', 'Eixo Z = f(x,y)');
+//Fase 1: Inicialização Aleatória dos Pesos dos Neurônios Ocultos
+
+//matriz de pesos aleatórios W, com q linhas e p + 1 colunas
+W = a + (b - a).*rand(q,p+1);
+
+x_ones = ones(2250,1);  //Vetor coluna com 2250 linhas de 1s
+
+/*Reorganiza o vetor de entrada X onde a primeira coluna representa
+a entrada bias (valores 1) e a segunda coluna representa os valores
+dos dados de entrada coletados. */
+
+X(:,1) = x_ones;
+X(:,2) = X1;
+X = X';         //Transpõe a matriz X (cada coluna corresponde a uma entrada)
+D = D';         //Transpõe a matriz D (cada coluna corresponde a uma saída)
 ```
-### Parte 4: Implementação do algoritmo hill climbing
-De início, gera-se um número aleatório entre 1 e o tamanho do vetor *z*
+### Parte 3: Acúmulo das saídas dos neurônios ocultos *matriz u* e matriz da função de ativação Z
+Nesta parte do código, foi criado a matriz com o acúmulo das saídas. Esses valores foram passados pela função de ativação e uma matriz Z com esses valores foi criada. Uma nova coluna de valores 1 foi inserida e a matriz transposta.
 
 ```
-n=grand(1,1,"uin",1,size(z, "r"));
-```
-Em seguida, criou-se um laço while que irá durar enquanto o valor de *n* for menor ou igual ao tamanho máximo do vetor *z*.
-```
-while n<=size(z, "r") do
-```
-Foi criada uma variável para armazenar o valor de cada elemento do vetor *z* por iteração.
-```
-maior = z(n);
-```
-Nesse momento, iniciam-se os testes de valor - Para cada situação prevista, o algoritmo deve ter um dado comportamento. Analisemos cada uma delas:
+//Fase 2: Acúmulo das Saídas dos Neurônios Ocultos
 
-Para o primeiro caso, se *n* for maior que 1 *(ou seja: não for o primeiro elemento do vetor - pois se fosse, ele poderia voltar a um elemento não existente e retornar erro)* e for menor que seu elemento anterior, atribua ao elemento anterior à variável *maior* e faça com que *n* volte 1 elemento no vetor.
+u = W*X;                //Matriz de saída u onde cada coluna representa as saidas do set de neurônios
+Z = 1./(1+exp(-u));     //Passa a matriz u pela função de ativação e armazena os valores em Z
+Z = ([x_ones Z'])';     //Acrescenta uma coluna de 1s na matriz Z e a transpõe
 ```
-    if(n>1 & maior < z(n-1))
-        maior = z(n-1);
-        n=n-1;
- ```
-Se *n* for menor que o tamanho máximo do vetor *(ou seja: se ele nao for o último elemento do vetor - pois se fosse, ele avançaria a um elemento não existente e retornaria erro)* e seu valor for menor que o do elemento posterior, atribua o valor da frente à variável *maior* e faça com que *n* avance 1 elemento no vetor.
- ```
-    elseif(n<size(z, "r") & maior < z(n+1))
-        maior = z(n+1);
-        n=n+1;
-  ```
-Caso o valor de *n* escolhido aleatoriamente seja 1, precisamos fazer com que ele verifique apenas o valor posterior; e caso este seja maior, avancar com a busca; caso contrário o algoritmo deve sair do laço e retornar o primeiro elemento como máximo local encontrado - encerrando sua execução.
- ```
-    elseif(n==1)
-        if(maior < z(n+1))
-            maior = z(n+1);
-            n=n+1;
-        else
-            disp(maior, n, "Máximo valor local da função: ");
-            break
-        end
- ```
-Caso o valor de *n* escolhido aleatoriamento seja o do último elemento do vetor, precisamos fazer com que ele verifique apenas o valor anterior; e caso ele seja maior, continuar a busca; caso contrário o algoritmo sai do laço e retorna este último elemento como máximo local encontrado - encerrando sua execução.
+### Parte 4: Cálculo dos pesos dos neurônios de saída
+A matriz de pesos *M* é calculada usando método dos mínimos quadrados.
+
 ```
-    elseif(n==size(z, "r"))
-        if(maior < z(n-1))
-            maior = z(n-1);
-            n=n-1;
-        else
-            disp(maior, n, "Máximo valor local da função: ");
-            break
-        end
- ```
- Caso o algoritmo encontre um valor que seja tanto maior que o seu valor anterior, quanto seu posterior, terá sido encontrado um máximo local; devendo esse valor ser retornado no console, o laço encerrado e o algoritmo finalizado.
- ```
-    else
-        disp(maior,n,"Máximo valor local da função: ");
-        break
-    end
-end
+//Fase 3: Cálculo dos Pesos dos Neurônios de Saída
+
+M = D*Z'*(Z*Z')^(-1);   //Aplica o método dos mínimos quadrados e encontra a matriz M de saída
+```
+### Parte 5: Ativação da rede
+A rede é ativada criando o vetor linha Y que é a saída da rede.
+
+```
+//Teste e Capacidade de Generalização da Rede ELM
+
+Y = M*Z;    //Ativa os neurônios da camada de saída
+```
+### Parte 6: Avaliação do modelo
+Conforme solicitado na questão, o modelo é testado usando a métrica R2 e o resultado é exibido no console.
+```
+//Avaliação do modelo pela métrica R2
+R2 = 1-(sum((D-Y).^2)/sum((D - mean(D)).^2));
+disp(R2);
+```
+### Parte 7: Plotagem dos gráficos
+Para finalizar os dois gráficos são plotados, o dos dados iniciais do aerogerador e o dos dados da saída da rede ELM.
+```
+//Plota os gráficos dos dados do aerogerador e da rede ativada
+clf;
+scatter(X1,base(:,2), "scilabblue2", ".");
+plot2d(X1,Y);
+xlabel("Regressão usando ELM (Extreme Learning machine");
 ```
 
 ## Discussão dos resultados obtidos
