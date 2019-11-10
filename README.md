@@ -127,10 +127,13 @@ Ao executar o arquivo [tr2_q1_elm.sce](tr2_q1_elm.sce) no Scilab, podemos verifi
 * Ao alterar o número de neurônios, o grau de adaptação aos dados se altera bastante, atingindo um ponto ótimo com 7 neurônios. Encontrar o número ideal de neurônios da camada escondida não é uma tarefa fácil porque depende de uma série de fatores, muito dos quais não temos controle total. O valor de *q* é geralmente encontrado por tentativa-e-erro, em função da capacidade de generalização da rede.
 
 ![grafico_1n](https://user-images.githubusercontent.com/51038132/68537068-df730680-033c-11ea-94e8-a79bacf27eb9.png)
+
 Retorno do gráfico com 1 neurônio usado.
 ![grafico_7n](https://user-images.githubusercontent.com/51038132/68537069-df730680-033c-11ea-8a5a-449c099c77fe.png)
+
 Retorno do gráfico com 7 neurônios usados.
 ![grafico_17n](https://user-images.githubusercontent.com/51038132/68537070-df730680-033c-11ea-9026-b8e4533f8d3e.png)
+
 Retorno do gráfico com 17 neurônios usados.
 
 ## Conclusão
