@@ -100,7 +100,7 @@ Conforme solicitado na questão, o modelo é testado usando a métrica R2 e o re
 ```
 //Avaliação do modelo pela métrica R2
 R2 = 1-(sum((D-Y).^2)/sum((D - mean(D)).^2));
-disp(R2);
+disp("Grau de Adaptação da saída da rede R2: " + string(R2));
 ```
 ### Parte 7: Plotagem dos gráficos
 Para finalizar os dois gráficos são plotados, o dos dados iniciais do aerogerador e o dos dados da saída da rede ELM.
@@ -119,7 +119,7 @@ Ao executar o arquivo [tr2_q1_elm.sce](tr2_q1_elm.sce) no Scilab, podemos verifi
 
 ![grafico_q1](https://user-images.githubusercontent.com/51038132/65838269-cad03700-e2d7-11e9-9a1f-59569719ef10.png)
 
-* O console irá retornar o valor máximo local encontrado:
+* O console irá retornar o valor do grau de adaptação aos dados:
 
 ![console_q1](https://user-images.githubusercontent.com/51038132/65838454-8a71b880-e2d9-11e9-844f-a746cb702366.png)
 
