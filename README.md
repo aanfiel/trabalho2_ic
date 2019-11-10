@@ -117,7 +117,7 @@ xlabel("Regressão usando ELM (Extreme Learning machine");
 Ao executar o arquivo [tr2_q1_elm.sce](tr2_q1_elm.sce) no Scilab, podemos verificar basicamente duas ações: 
 * A abertura da janela gráfica exibindo o gráfico da função da questão:
 
-![grafico_q1](https://user-images.githubusercontent.com/51038132/65838269-cad03700-e2d7-11e9-9a1f-59569719ef10.png)
+![grafico_7n](https://user-images.githubusercontent.com/51038132/68537069-df730680-033c-11ea-8a5a-449c099c77fe.png)
 
 * O console irá retornar o valor do grau de adaptação aos dados:
 
@@ -125,7 +125,9 @@ Ao executar o arquivo [tr2_q1_elm.sce](tr2_q1_elm.sce) no Scilab, podemos verifi
 
 * A cada execução, como o hill climbing inicia em pontos aleatórios, podemos verificar que o algoritmo pode encontrar diferentes pontos máximos locais:
 
-![console_q1_2](https://user-images.githubusercontent.com/51038132/65838467-c73daf80-e2d9-11e9-9026-72d3a7743170.png)
+![grafico_1n](https://user-images.githubusercontent.com/51038132/68537068-df730680-033c-11ea-94e8-a79bacf27eb9.png)
+![grafico_7n](https://user-images.githubusercontent.com/51038132/68537069-df730680-033c-11ea-8a5a-449c099c77fe.png)
+![grafico_17n](https://user-images.githubusercontent.com/51038132/68537070-df730680-033c-11ea-9026-b8e4533f8d3e.png)
 
 ## Conclusão
 
