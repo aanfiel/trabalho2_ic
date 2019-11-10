@@ -15,6 +15,10 @@
 * **José Lopes de S. Filho** - [LinkedIn](https://www.linkedin.com/in/joselopesfilho/)
 * *Engenharia da Computação (UFC) - Matrícula # 389097*
 
+### Licença:
+
+Este projeto é licenciado sob a MIT License - ver o arquivo [LICENSE](LICENSE) para detalhes
+
 ## Questão 1
 
 *1. Determine um modelo de regressão usando rede neural Extreme Learning Machine (ELM) para o conjunto de dados aerogerador.dat (variável de entrada: velocidade do vento, variável de saída: potência gerada). Avalie a qualidade do modelo pela métrica R2 (equação 48, slides sobre Regressão Múltipla) para diferentes quantidades de neurônios ocultos.*
