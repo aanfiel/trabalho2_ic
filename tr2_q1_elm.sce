@@ -50,10 +50,10 @@ Y = M*Z;    //Ativa os neurônios da camada de saída
 
 //Avaliação do modelo pela métrica R2
 R2 = 1-(sum((D-Y).^2)/sum((D - mean(D)).^2));
+disp("Grau de Adaptação da saída da rede R2: " + string(R2));
 
 //Plota os gráficos dos dados do aerogerador e da rede ativada
 clf;
-disp(R2);
 scatter(X1,base(:,2), "scilabblue2", ".");
 plot2d(X1,Y);
 xlabel("Regressão usando ELM (Extreme Learning machine");
