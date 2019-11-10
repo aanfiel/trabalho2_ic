@@ -114,7 +114,7 @@ xlabel("Regressão usando ELM (Extreme Learning machine");
 
 ## Discussão dos resultados obtidos
 
-Ao executar o arquivo [questao1.sce](questao1.sce) no Scilab, podemos verificar basicamente duas ações: 
+Ao executar o arquivo [tr2_q1_elm.sce](tr2_q1_elm.sce) no Scilab, podemos verificar basicamente duas ações: 
 * A abertura da janela gráfica exibindo o gráfico da função da questão:
 
 ![grafico_q1](https://user-images.githubusercontent.com/51038132/65838269-cad03700-e2d7-11e9-9a1f-59569719ef10.png)
