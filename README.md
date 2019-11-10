@@ -31,7 +31,7 @@ Para a resolução desta questão e criação deste relatório foram usados os s
 * [grafico_1n.png](grafico_1n.png) - Gráfico de saída da rede com 1 neurônio
 * [grafico_7n.png](grafico_7n.png) - Gráfico de saída da rede com 7 neurônios
 * [grafico_17n.png](grafico_17n.png) - Gráfico de saída da rede com 17 neurônios
-* [console_t2_q1.png](console_t2_q1.png) - Gráfico de saída da rede com 17 neurônios
+* [console_t2_q1.png](console_t2_q1.png) - Retorno do console ao executar o código-fonte
 
 ## Código comentado
 
