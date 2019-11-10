@@ -28,6 +28,9 @@ Para a resolução desta questão e criação deste relatório foram usados os s
 
 * [tr2_q1_elm.sce](tr2_q1_elm.sce) - Código-fonte da aplicação proposta na questão
 * [aerogerador.dat](aerogerador.dat) - Conjunto de dados da questão
+* [grafico_1n](grafico_1n) - Gráfico de saída da rede com 1 neurônio
+* [grafico_7n](grafico_7n) - Gráfico de saída da rede com 7 neurônios
+* [grafico_17n](grafico_17n) - Gráfico de saída da rede com 17 neurônios
 
 ## Código comentado
 
