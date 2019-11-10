@@ -135,7 +135,3 @@ Retorno do gráfico com 7 neurônios usados.
 ![grafico_17n](https://user-images.githubusercontent.com/51038132/68537070-df730680-033c-11ea-9026-b8e4533f8d3e.png)
 
 Retorno do gráfico com 17 neurônios usados.
-
-## Conclusão
-
-O algoritmo Hill Climbing (subida de encosta) é capaz de encontrar a cada execução diferentes máximos locais, dependendo do valor *n* inicial.
