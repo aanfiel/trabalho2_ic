@@ -31,6 +31,7 @@ Para a resolução desta questão e criação deste relatório foram usados os s
 * [grafico_1n.png](grafico_1n.png) - Gráfico de saída da rede com 1 neurônio
 * [grafico_7n.png](grafico_7n.png) - Gráfico de saída da rede com 7 neurônios
 * [grafico_17n.png](grafico_17n.png) - Gráfico de saída da rede com 17 neurônios
+* [console_t2_q1.png](console_t2_q1.png) - Gráfico de saída da rede com 17 neurônios
 
 ## Código comentado
 
@@ -121,13 +122,16 @@ Ao executar o arquivo [tr2_q1_elm.sce](tr2_q1_elm.sce) no Scilab, podemos verifi
 
 * O console irá retornar o valor do grau de adaptação aos dados:
 
-![console_q1](https://user-images.githubusercontent.com/51038132/65838454-8a71b880-e2d9-11e9-844f-a746cb702366.png)
+![console_t2_q1](https://user-images.githubusercontent.com/51038132/68537102-85bf0c00-033d-11ea-92be-b8b010801cec.png)
 
-* A cada execução, como o hill climbing inicia em pontos aleatórios, podemos verificar que o algoritmo pode encontrar diferentes pontos máximos locais:
+* Ao alterar o número de neurônios, o grau de adaptação aos dados se altera bastante, atingindo um ponto ótimo com 7 neurônios. Encontrar o número ideal de neurônios da camada escondida não é uma tarefa fácil porque depende de uma série de fatores, muito dos quais não temos controle total. O valor de *q* é geralmente encontrado por tentativa-e-erro, em função da capacidade de generalização da rede.
 
 ![grafico_1n](https://user-images.githubusercontent.com/51038132/68537068-df730680-033c-11ea-94e8-a79bacf27eb9.png)
+Retorno do gráfico com 1 neurônio usado.
 ![grafico_7n](https://user-images.githubusercontent.com/51038132/68537069-df730680-033c-11ea-8a5a-449c099c77fe.png)
+Retorno do gráfico com 7 neurônios usados.
 ![grafico_17n](https://user-images.githubusercontent.com/51038132/68537070-df730680-033c-11ea-9026-b8e4533f8d3e.png)
+Retorno do gráfico com 17 neurônios usados.
 
 ## Conclusão
 
