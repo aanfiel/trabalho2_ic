@@ -270,4 +270,223 @@ Ao executar o arquivo [tr2_q2_knn.sce](tr2_q2_knn.sce) no Scilab, podemos verifi
 * A Matriz com os k elementos mais próximo é exibida e o tipo de flor classificado:
 ![tr2_q2_knn_6](https://user-images.githubusercontent.com/51038132/68555038-5de9aa00-040a-11ea-8f90-3b41f1569d8b.png)
 
-### Parte 2: Nearest Prototype Classifier
+### Parte 2: Extreme Learning Machine
+
+### Iniciando 
+Para a resolução desta questão e criação deste relatório foram usados os seguintes arquivos:
+
+* [tr2_q2_ELM.sce](tr2_q2_ELM.sce) - Código-fonte da classificação usando ELM (Extreme Learning Machine)
+* [iris_log.dat](iris_log.dat) - Conjunto de dados da questão
+
+## Código comentado
+
+```
+// SEGUNDO TRABALHO DE INTELIGÊNCIA COMPUTACIONAL
+// Questão 2 (ELM)
+// Aluno: José Lopes de Souza Filho
+// Matrícula: 389097
+// Aplicação: Scilab, versão 6.0.2
+// SO: Linux Mint 19.2 Tina
+//-----------------------------------------------------------------------------
+
+clear;
+clc;
+base = fscanfMat('iris_log.dat');
+X = base(:,1:4);
+D = base(:,5:7);
+q = 9; //qtd de neurônios ocultos
+p = 4; //qtd atributos
+a=0; b=0.1; // define intervalo dos pesos
+
+x_ones  = ones(150,1);
+X = [x_ones X];
+X = X';
+D = D';
+
+
+//----------------leave-one-out--------------------------------------------
+disp("método leave-one-out: \n");
+W=a+(b-a).*rand(q,p+1); // gera numeros uniformes
+YT1 = [];
+for x = 1 : 150
+    XT = X(:,x);
+    DT = D(:,x);
+    if (x==1)
+        XTR = X(:,x+1 : 150);
+        DTR = D(:,x+1 : 150);
+      
+    else
+        XTR = X(:,[1:x-1, x+1 : 150]);
+        DTR = D(:,[1:x-1, x+1 : 150]);
+        
+    end
+    u1 = W*XTR;
+    Z1 = 1./(1+exp(-u1));
+    Z1 = [ones(1,149); Z1];
+    M1 = DTR*Z1'*(Z1*Z1')^(-1);
+
+    ut1 = W*XT;
+    ZT1 = 1./(1+exp(-ut1));
+    ZT1 = [ones(1,1); ZT1];
+    ach = 0;
+    YT1 = [YT1 M1*ZT1]; 
+    
+end
+
+ach = 0;
+for i = 1 : 150
+    
+    if(max(YT1(:,i)) == YT1(1,i))
+        YT1(:,i) = [1; 0; 0];
+    elseif(max(YT1(:,i)) == YT1(2,i))
+        YT1(:,i) = [0; 1; 0];
+    else
+        YT1(:,i) = [0; 0; 1];
+    end
+    if(YT1(:,i) == D(:,i))
+        ach = ach+1;
+    end
+end
+// disp(YT1');
+disp("Acuracia do método leave-one-out: ");
+disp(ach/150);
+```
+## Discussão dos resultados obtidos
+
+Ao executar o arquivo [tr2_q2_ELM.sce](tr2_q2_ELM.sce) no Scilab, teremos a execução do algoritmo ELM aplicado à base de dados iris_log. Foi utilizado o método leave one out e e ao fim da execução o console retorna a acurácia do método.
+
+### Parte 3: Multi Layer Perceptron (MLP)
+
+### Iniciando 
+Para a resolução desta questão e criação deste relatório foram usados os seguintes arquivos:
+
+* [tr2_q2_MLP.sce](tr2_q2_MLP.sce) - Código-fonte da classificação usando MLP (Multi Layer Perceptron)
+* [iris_log.dat](iris_log.dat) - Conjunto de dados da questão
+
+## Código comentado
+
+```
+// SEGUNDO TRABALHO DE INTELIGÊNCIA COMPUTACIONAL
+// Questão 2 (Perceptron Multi Camadas MLP)
+// Aluno: José Lopes de Souza Filho
+// Matrícula: 389097
+// Aplicação: Scilab, versão 6.0.2
+// SO: Linux Mint 19.2 Tina
+// Para que esta aplicação rode apropriadamente deve ser instalado o 
+// ANN Toolbox. (https://atoms.scilab.org/toolboxes/ANN_Toolbox)
+//-----------------------------------------------------------------------------
+
+clc;    //Limpa a tela
+clear;  //Limpa as variáveis armazenadas anteriormente
+
+// Assegura o mesmo ponto de início toda vez
+rand('seed', 0);
+
+// definição da rede
+// 4 neurônios por rede, incluindo a entrada
+// 4 neurônios na camada de entrada, 4 na camada oculta e 1 na camada de saída
+N = [4,4,3];
+
+//matriz de treinamento x deixando a primeira entrada de fora (leave-one-out)
+base = fscanfMat('iris_log.dat');
+x = base(2:150,1:4)';
+
+//Saída desejada: 100 para classe 1, 010 para classe 2, 001 para classe 3
+t = base(2:150,5:7)';
+
+//Taxa de aprendizado e limite de erro tolerado pela rede
+lp = [2.5, 0];
+
+//Inicializa a matriz de pesos
+W = ann_FF_init(N);
+
+//Ciclos de treinamento
+T = 100;
+
+W = ann_FF_Std_online(x,t,N,W,lp,T);
+//x é a matriz de treino t é a saída W são os pesos inicializados,
+//N é a arquitetura da rede neural, lp é a taxa de aprendizado e
+//T é o número de iterações
+
+//Execução completa
+retorno = ann_FF_run(x,N,W) //a rede N foi testada usando x como base de treino,
+// e W como os pesos das conexões
+```
+## Discussão dos resultados obtidos
+
+*IMPORTANTE: Para a correta execução deste código a toolbox ANN Toolbox deve ser instalada no SciLab. a toolBox pode ser encontrada no link: https://atoms.scilab.org/toolboxes/ANN_Toolbox.*
+Ao executar o arquivo [tr2_q2_MLP.sce](tr2_q2_MLP.sce) no Scilab, a matriz *resultado* é criada como saída da rede mostrando o seu grau de adaptação.
+
+### Parte 4: Perceptron
+
+### Iniciando 
+Para a resolução desta questão e criação deste relatório foram usados os seguintes arquivos:
+
+* [tr2_q2_perceptron.sce](tr2_q2_perceptron.sce) - Código-fonte da classificação usando Perceptron
+* [iris_log.dat](iris_log.dat) - Conjunto de dados da questão
+
+## Código comentado
+
+```
+// SEGUNDO TRABALHO DE INTELIGÊNCIA COMPUTACIONAL
+// Questão 2 (Perceptron)
+// Aluno: José Lopes de Souza Filho
+// Matrícula: 389097
+// Aplicação: Scilab, versão 6.0.2
+// SO: Linux Mint 19.2 Tina
+//-----------------------------------------------------------------------------
+
+clc;    //Limpa a tela
+clear;  //Limpa as variáveis armazenadas anteriormente
+
+base = fscanfMat ('iris_log.dat');  //Carrega a base de dados
+q = 3;                              //qtd de neurônios 
+p = 4;                              //qtd atributos
+n = 0.001;                          //taxa de aprendizagem
+X = base(:,1:4);                    //Carrega os dados de entrada na variável X
+D = base(:,5:7);                    //Carrega as saídas na variável D
+x_ones = ones(150,1)*(-1);          //Cria um vetor de 1s (bias)
+X = [x_ones X];                     //Insere o vetor de 1s na entrada (bias)
+W = zeros(q,p+1);                   //Cria a matriz de pesos
+X = X';                             //Transpõe a matriz de entrada
+D = D';                             //Transpõe a matriz de saída
+
+//Método leave-one-out
+disp("método leave-one-out: ");
+for x = 1 : 150
+    if (x==1)
+        lista = [x+1 : 150];
+    else
+        lista = [1:x-1, x+1 : 150];
+    end
+    for i = lista
+        Y = W*X(:,i);
+        E = D(:,i) - Y;
+        A = (X(:,i))';
+        W = W + n*E*A;
+       
+    end
+    XT = X(:,x);
+    YT(:,x) = W*XT;
+end
+ach = 0;
+for i = 1 : 150
+    
+    if(max(YT(:,i)) == YT(1,i))
+        YT(:,i) = [1; 0; 0];
+    elseif(max(YT(:,i)) == YT(2,i))
+        YT(:,i) = [0; 1; 0];
+    else
+        YT(:,i) = [0; 0; 1];
+    end
+    if(YT(:,i) == D(:,i))
+        ach = ach+1;
+    end
+end
+
+disp("Acurácia do método leave-one-out: ");
+disp(ach/150);
+```
+## Discussão dos resultados obtidos
+
+Ao executar o arquivo [tr2_q2_MLP.sce](tr2_q2_MLP.sce) no Scilab, rede é ativada e o console retorna o grau de acurácia usando o método one-leave-out.
