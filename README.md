@@ -158,8 +158,6 @@ Para a resolução desta questão e criação deste relatório foram usados os s
 
 ## Código comentado
 
-### Parte 1: Preparação dos dados da rede
-Primeiramente, o conjunto de dados foi carregado e os dados de entrada e de saída foram divididos nos vetores X1 (entrada) e D (saída). Foi estipulado o número de neurônios *q*, o número de atributos *p* e o intervalo dos pesos *a* e *b*.
 ```
 // SEGUNDO TRABALHO DE INTELIGÊNCIA COMPUTACIONAL
 // Questão 2 (KNN)
@@ -272,4 +270,4 @@ Ao executar o arquivo [tr2_q2_knn.sce](tr2_q2_knn.sce) no Scilab, podemos verifi
 * A Matriz com os k elementos mais próximo é exibida e o tipo de flor classificado:
 ![tr2_q2_knn_6](https://user-images.githubusercontent.com/51038132/68555038-5de9aa00-040a-11ea-8f90-3b41f1569d8b.png)
 
-### Parte 1: Nearest Prototype Classifier
+### Parte 2: Nearest Prototype Classifier
