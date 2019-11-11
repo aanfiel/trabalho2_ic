@@ -135,3 +135,141 @@ Retorno do gráfico com 7 neurônios usados.
 ![grafico_17n](https://user-images.githubusercontent.com/51038132/68537070-df730680-033c-11ea-9026-b8e4533f8d3e.png)
 
 Retorno do gráfico com 17 neurônios usados.
+
+## Questão 2
+
+*2. Classifique o conjunto de dados disponível no arquivo iris_log.dat usando: K-NN, Nearest Prototype Classifier, Perceptron, MLP, e ELM. Utilize normalização zscore e a estratégia de validação cruzada leave-one-out.* 
+
+*Obs.: 1. É permitido usar funções já disponíveis para o MLP. Os demais classificadores deverão ser codificados. 
+2. Na base iris_log.dat, as quatro primeiras colunas representam os atributos dos vetores de características e as três últimas representam a classe da amostra ([1 0 0], [0 1 0] e [0 0 1]).*
+
+### Parte 1: K-NN
+### Iniciando 
+Para a resolução desta questão e criação deste relatório foram usados os seguintes arquivos:
+
+* [tr2_q2_knn.sce](tr2_q2_knn.sce) - Código-fonte da classificação usando K-NN (K-Nearest Neighbors)
+* [iris_log.dat](iris_log.dat) - Conjunto de dados da questão
+* [tr2_q2_knn_1.png](tr2_q2_knn_1.png) - Imagem 1 do console para uso do K-NN
+* [tr2_q2_knn_2.png](tr2_q2_knn_2.png) - Imagem 2 do console para uso do K-NN
+* [tr2_q2_knn_3.png](tr2_q2_knn_3.png) - Imagem 3 do console para uso do K-NN
+* [tr2_q2_knn_4.png](tr2_q2_knn_4.png) - Imagem 4 do console para uso do K-NN
+* [tr2_q2_knn_5.png](tr2_q2_knn_5.png) - Imagem 5 do console para uso do K-NN
+* [tr2_q2_knn_6.png](tr2_q2_knn_6.png) - Imagem 6 do console para uso do K-NN
+
+## Código comentado
+
+### Parte 1: Preparação dos dados da rede
+Primeiramente, o conjunto de dados foi carregado e os dados de entrada e de saída foram divididos nos vetores X1 (entrada) e D (saída). Foi estipulado o número de neurônios *q*, o número de atributos *p* e o intervalo dos pesos *a* e *b*.
+```
+// SEGUNDO TRABALHO DE INTELIGÊNCIA COMPUTACIONAL
+// Questão 2 (KNN)
+// Aluno: José Lopes de Souza Filho
+// Matrícula: 389097
+// Aplicação: Scilab, versão 6.0.2
+// SO: Linux Mint 19.2 Tina
+//-----------------------------------------------------------------------------
+
+//PARTE 1: AJUSTES INICIAIS
+
+clc;    //Limpa a tela
+clear;  //Limpa as variáveis armazenadas anteriormente
+
+//Importando a base de dados iris_log.dat para a variável ibase2
+ibase2 = fscanfMat('iris_log.dat');
+
+/*separando a primeira entrada para teste posterior (leave-one-out)
+//para teste posterior basta entrar com os valores (5.1, 3.5, 1.4, 2.0) 
+e verificar retorno 1 0 0 (flor setosa) nas entradas quando solicitado*/
+ibase3 = ibase2(2:150,:);
+
+//Normalização z-score da base de dados
+C1 = mean(ibase3(:,1));     //Média da primeira coluna dos dados
+P1 = stdev(ibase3(:,1));    //Desvio padrão da primeira coluna dos dados
+C2 = mean(ibase3(:,2));     //Média da segunda coluna dos dados
+P2 = stdev(ibase3(:,2));    //Desvio padrão da segunda coluna dos dados
+C3 = mean(ibase3(:,3));     //Média da terceira coluna dos dados
+P3 = stdev(ibase3(:,3));    //desvio padrão da terceira coluna dos dados
+C4 = mean(ibase3(:,4));     //Média da quarta coluna dos dados
+P4 = stdev(ibase3(:,4));    //Desvio padrão da quarta coluna dos dados
+ibase(:,1) = (ibase3(:,1)-C1)./P1;  //Aplica Z-score na primeira coluna
+ibase(:,2) = (ibase3(:,2)-C2)./P2;  //Aplica Z-score na segunda coluna
+ibase(:,3) = (ibase3(:,3)-C3)./P3;  //Aplica Z-score na terceira coluna
+ibase(:,4) = (ibase3(:,4)-C4)./P4;  //Aplica Z-score na quarta coluna
+ibase(:,5) = (ibase3(:,5));     //Copia os dados da base para a quinta coluna
+ibase(:,6) = (ibase3(:,6));     //Copia os dados da base para a sexta coluna
+ibase(:,7) = (ibase3(:,7));     //Copia os dados da base para a sétima coluna
+
+//PARTE 2: SOLICITA OS DADOS DO USUÁRIO
+
+disp('---------------- ROBÔ BOTÂNICO USANDO KNN ------------------------------');
+k = input('Quantos valores você gostaria de comparar? (k) -> ');
+G = input('Qual a largura da sépala? (em cm) -> ');
+H = input('Qual o comprimento da sépala? (em cm) -> ');
+I = input('Qual a largura da pétala? (em cm) -> ');
+J = input('Qual o comprimento da pétala? (em cm) -> ');
+
+//Normaliza os dados da entrada
+ponto_teste(1,1) = ((G-C1)/P1);
+ponto_teste(1,2) = ((H-C2)/P2);
+ponto_teste(1,3) = ((I-C3)/P3);
+ponto_teste(1,4) = ((J-C4)/P4);
+
+//PARTE 3: CALCULANDO A DISTANCIA EUCLIDIANA DOS PONTOS
+
+tam = size(ibase, 1);   // numero de linhas da matriz
+
+for i=1:tam
+    linha = ibase(i,1:4);
+    resultado(i,:) = linha-ponto_teste;
+    resultado2 = resultado.^2;
+    d_euclidiana(i,:) = sqrt(sum(resultado2(i,:)));
+end
+
+base2 = [d_euclidiana, ibase];  //Cria uma nova matriz com as distâncias euclidianas inseridas
+
+//PARTE 4: SELECIONANDO OS K MENORES VALORES
+
+for i=1:k
+    [min_valor, min_linha] = min(base2(:,1));
+    k_menores(i,:) = base2(min_linha,:);
+    base2(min_linha,:) = [];
+end
+
+disp("Os "+ string(k) +" valores mais próximos da sua escolha na base de dados são:");
+disp(k_menores);
+
+//PARTE 5: CONTANDO O NÚMERO DE ENTRADAS 1 EM CADA COLUNA DO RESULTADO
+
+[nb6, loc6] = members(1, k_menores(:,6));
+[nb7, loc7] = members(1, k_menores(:,7));
+[nb8, loc8] = members(1, k_menores(:,8));
+
+//Verifica qual das 3 colunas possui mais entradas 1. Esta será a escolha do sistema
+[w,y] = max(nb6, nb7, nb8);     
+
+//PARTE FINAL: CLASSIFICANDO O TIPO DE FLOR DE ACORDO COM O RESULTADO
+
+if y==1 then
+    disp("A flor é do tipo setosa!");
+elseif y==2 then
+    disp("A flor é do tipo versicolor!");
+elseif y==3 then
+    disp("A flor é do tipo virginica!");
+end
+```
+## Discussão dos resultados obtidos
+
+Ao executar o arquivo [tr2_q2_knn.sce](tr2_q2_knn.sce) no Scilab, podemos verificar a seguinte sequência: 
+* A solicitação do número de vizinhos mais próximos a serem analisados:
+![tr2_q2_knn_1](https://user-images.githubusercontent.com/51038132/68555032-5cb87d00-040a-11ea-88b0-8f1c6b47af0f.png)
+
+* Os dados da flor são solicitados:
+![tr2_q2_knn_2](https://user-images.githubusercontent.com/51038132/68555034-5d511380-040a-11ea-90c7-92caea9b5975.png)
+![tr2_q2_knn_3](https://user-images.githubusercontent.com/51038132/68555035-5d511380-040a-11ea-8b29-0454d22c8f45.png)
+![tr2_q2_knn_4](https://user-images.githubusercontent.com/51038132/68555036-5de9aa00-040a-11ea-9302-dc8ef870b895.png)
+![tr2_q2_knn_5](https://user-images.githubusercontent.com/51038132/68555037-5de9aa00-040a-11ea-9882-36bb224a36ec.png)
+
+* A Matriz com os k elementos mais próximo é exibida e o tipo de flor classificado:
+![tr2_q2_knn_6](https://user-images.githubusercontent.com/51038132/68555038-5de9aa00-040a-11ea-8f90-3b41f1569d8b.png)
+
+### Parte 1: Nearest Prototype Classifier
